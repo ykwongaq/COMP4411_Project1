@@ -11,6 +11,7 @@
 
 #include "impressionistUI.h"
 #include "impressionistDoc.h"
+#include "ImpBrush.h"
 
 /*
 //------------------------------ Widget Examples -------------------------------------------------
@@ -254,8 +255,18 @@ void ImpressionistUI::cb_brushChoice(Fl_Widget* o, void* v)
 
 	int type=(int)v;
 
-
 	pDoc->setBrushType(type);
+	
+	// Activate or deactivate Widget base on the brush chosen
+	if(type == BRUSH_LINES || type == BRUSH_SCATTERED_LINES) {
+		pUI->m_StrokeDirChoice->activate();
+		pUI->m_BrushWidthSlider->activate();
+		pUI->m_LineAngleSlider->activate();
+	} else {
+		pUI->m_StrokeDirChoice->deactivate();
+		pUI->m_BrushWidthSlider->deactivate();
+		pUI->m_LineAngleSlider->deactivate();
+	}
 }
 
 //------------------------------------------------------------
@@ -518,6 +529,7 @@ ImpressionistUI::ImpressionistUI() {
 	m_BrushWidthSlider->value(this->m_nBrushWidth);
 	m_BrushWidthSlider->align(FL_ALIGN_RIGHT);
 	m_BrushWidthSlider->callback(cb_widthSlides);
+	m_BrushWidthSlider->deactivate();
 
 	m_LineAngleSlider = new Fl_Value_Slider(10, 130, 300, 20, "Line Angle");
 	m_LineAngleSlider->user_data((void *) ( this ));	// record self to be used by static callback functions
@@ -530,6 +542,7 @@ ImpressionistUI::ImpressionistUI() {
 	m_LineAngleSlider->value(this->m_nRotationAngle);
 	m_LineAngleSlider->align(FL_ALIGN_RIGHT);
 	m_LineAngleSlider->callback(cb_rotationAngle);
+	m_LineAngleSlider->deactivate();
 
 	m_AlphaSlider = new Fl_Value_Slider(10, 155, 300, 20, "Alpha");
 	m_AlphaSlider->user_data((void *) ( this ));	// record self to be used by static callback functions
