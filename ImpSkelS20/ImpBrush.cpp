@@ -16,7 +16,13 @@ ImpBrush::ImpBrush(ImpressionistDoc*	pDoc,
 				   char*				name) :
 					m_pDoc(pDoc), 
 					m_pBrushName(name)
+<<<<<<< HEAD
 {}
+=======
+{
+	this->alpha = 1;
+}
+>>>>>>> bd6e77c0ab78a6c9c80539bd6b420e57f9053a76
 
 //---------------------------------------------------
 // Return m_pDoc, which connects the UI and brushes
@@ -46,7 +52,7 @@ void ImpBrush::SetColor (const Point source)
 
 	GLubyte color[3];
 
-	memcpy ( color, pDoc->GetOriginalPixel( source ), 3 );
+	memcpy ( color, pDoc->GetOriginalPixel( source ), 3 );	// Copy the color from original source
  
 	glColor3ubv( color );
 

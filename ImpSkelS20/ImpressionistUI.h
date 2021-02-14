@@ -36,8 +36,13 @@ public:
 // for brush dialog
 	Fl_Window*			m_brushDialog;
 	Fl_Choice*			m_BrushTypeChoice;
+	Fl_Choice*          m_StrokeDirChoice;
 
 	Fl_Slider*			m_BrushSizeSlider;
+	Fl_Slider*			m_BrushWidthSlider;
+	Fl_Slider*			m_LineAngleSlider;
+	Fl_Slider*			m_AlphaSlider;
+
 	Fl_Button*          m_ClearCanvasButton;
 
 	// Member functions
@@ -52,15 +57,25 @@ public:
 	int					getSize();
 	void				setSize(int size);
 
+	int					getBrushWidth();
+
+	int					getRotationAngle();
+
+	float				getAlpha();
+
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
 
 	// All attributes here
 	int		m_nSize;
+	int		m_nBrushWidth;
+	int		m_nRotationAngle;
+	float	m_nAlpha;
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];
 	static Fl_Menu_Item		brushTypeMenu[NUM_BRUSH_TYPE+1];
+	static Fl_Menu_Item		strokeDirMenu[NUM_STROKE_TYPE+1];
 
 	static ImpressionistUI*	whoami(Fl_Menu_* o);
 
@@ -75,6 +90,10 @@ private:
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
 	static void	cb_clear_canvas_button(Fl_Widget* o, void* v);
 	static void	cb_sizeSlides(Fl_Widget* o, void* v);
+	static void cb_strokeDir(Fl_Widget *o, void *v);
+	static void cb_widthSlides(Fl_Widget *o, void *v);
+	static void cb_rotationAngle(Fl_Widget *o, void *v);
+	static void cb_alpha(Fl_Widget *o, void *v);
 
 };
 

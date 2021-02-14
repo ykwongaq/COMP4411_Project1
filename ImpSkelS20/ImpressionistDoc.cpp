@@ -78,6 +78,36 @@ void ImpressionistDoc::setBrushType(int type)
 }
 
 //---------------------------------------------------------
+// Called by the UI when the user changes the definition of 
+// stroke direction.
+// type: one of the defined stroke method types.
+//---------------------------------------------------------
+void ImpressionistDoc::setStrokeDirType(int type) {
+	this->m_pCurrentDirMethod = (STROKE_DIR) type;
+}
+
+//---------------------------------------------------------
+// Return the width of brush
+//---------------------------------------------------------
+int ImpressionistDoc::getBrushWidth() {
+	return this->m_pUI->getBrushWidth();
+}
+
+//---------------------------------------------------------
+// Return the rotation angle of line
+//---------------------------------------------------------
+int ImpressionistDoc::getLineAngle() {
+	return this->m_pUI->getRotationAngle();
+}
+
+//---------------------------------------------------------
+// Return the opacity alpha
+//---------------------------------------------------------
+float ImpressionistDoc::getAlpha() {
+	return this->m_pUI->getAlpha();
+}
+
+//---------------------------------------------------------
 // Returns the size of the brush.
 //---------------------------------------------------------
 int ImpressionistDoc::getSize()
@@ -199,4 +229,6 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( const Point p )
 {
 	return GetOriginalPixel( p.x, p.y );
 }
+
+
 
