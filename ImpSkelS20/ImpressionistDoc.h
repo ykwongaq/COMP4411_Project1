@@ -25,6 +25,10 @@ public:
 
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
 	void	setBrushType(int type);			// called by the UI to set the brushType
+	void	setStrokeDirType(int type);		// called by the UI to set the stroke direction
+	int		getBrushWidth();				// get the brush width from UI
+	int		getLineAngle();					// get the line angle from UI
+	float	getAlpha();						// get the alpha from UI
 	int		getSize();						// get the UI size
 	void	setSize(int size);				// set the UI size
 	char*	getImageName();					// get the current image name
@@ -44,9 +48,13 @@ public:
 
 
 	// The current active brush.
-	ImpBrush*			m_pCurrentBrush;	
+	ImpBrush*			m_pCurrentBrush;
+
+	// The current methods for defining stoke direction
+	STROKE_DIR			m_pCurrentDirMethod;
+
 	// Size of the brush.
-	int m_nSize;							
+	int m_nSize;
 
 	ImpressionistUI*	m_pUI;
 

@@ -16,8 +16,7 @@ ImpBrush::ImpBrush(ImpressionistDoc*	pDoc,
 				   char*				name) :
 					m_pDoc(pDoc), 
 					m_pBrushName(name)
-{
-}
+{}
 
 //---------------------------------------------------
 // Return m_pDoc, which connects the UI and brushes

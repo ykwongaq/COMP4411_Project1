@@ -21,6 +21,14 @@ enum
 	NUM_BRUSH_TYPE // Make sure this stays at the end!
 };
 
+// Each stroke direction type has an associated constant.
+enum STROKE_DIR {
+	STR_SLIDER_OR_MOUSE = 0,
+	STR_GRADIENT,
+	STR_BRUSH_DIR,
+	NUM_STROKE_TYPE	// Make sure this stays at the end!
+};
+
 
 class ImpressionistDoc; // Pre-declaring class
 
