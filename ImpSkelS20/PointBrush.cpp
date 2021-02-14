@@ -23,8 +23,6 @@ void PointBrush::BrushBegin( const Point source, const Point target )
 
 	int size = pDoc->getSize();
 
-
-
 	glPointSize( (float)size );
 
 	BrushMove( source, target );
@@ -41,9 +39,9 @@ void PointBrush::BrushMove( const Point source, const Point target )
 	}
 
 	glBegin( GL_POINTS );
-		SetColor( source );
+	SetColor( source );
 
-		glVertex2d( target.x, target.y );
+	glVertex2d( target.x, target.y );
 
 	glEnd();
 }
