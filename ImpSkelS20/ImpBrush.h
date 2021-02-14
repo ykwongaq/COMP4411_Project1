@@ -69,8 +69,6 @@ private:
 
 	// Brush's name (not used in this version).
 	char*				m_pBrushName;
-
-	float alpha;
 };
 
 #endif
