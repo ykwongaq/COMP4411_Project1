@@ -28,7 +28,7 @@ public:
 	void	setStrokeDirType(int type);		// called by the UI to set the stroke direction
 	int		getBrushWidth();				// get the brush width from UI
 	int		getLineAngle();					// get the line angle from UI
-	float	getAlpha()						// get the alpha from UI
+	float	getAlpha();						// get the alpha from UI
 	int		getSize();						// get the UI size
 	void	setSize(int size);				// set the UI size
 	char*	getImageName();					// get the current image name
