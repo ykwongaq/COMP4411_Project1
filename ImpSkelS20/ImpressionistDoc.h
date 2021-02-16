@@ -26,7 +26,8 @@ public:
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
 	void	setBrushType(int type);			// called by the UI to set the brushType
 	void	setStrokeDirType(int type);		// called by the UI to set the stroke direction
-	int		getBrushWidth();				// get the brush width from UI
+	STROKE_DIR	getStrokeDirType();			// get the stroke direction method
+	int		getLineWidth();					// get the brush width from UI
 	int		getLineAngle();					// get the line angle from UI
 	float	getAlpha();						// get the alpha from UI
 	int		getSize();						// get the UI size

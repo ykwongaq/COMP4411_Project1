@@ -14,7 +14,7 @@
 
 // Include individual brush headers here.
 #include "PointBrush.h"
-
+#include "LineBrush.h"
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
 
@@ -36,7 +36,7 @@ ImpressionistDoc::ImpressionistDoc()
 
 	// Note: You should implement these 5 brushes.  They are set the same (PointBrush) for now
 	ImpBrush::c_pBrushes[BRUSH_LINES]				
-		= new PointBrush( this, "Lines" );
+		= new LineBrush( this, "Lines" );
 	ImpBrush::c_pBrushes[BRUSH_CIRCLES]				
 		= new PointBrush( this, "Circles" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_POINTS]	
@@ -87,9 +87,16 @@ void ImpressionistDoc::setStrokeDirType(int type) {
 }
 
 //---------------------------------------------------------
+// Return the stroke direction method
+//---------------------------------------------------------
+STROKE_DIR ImpressionistDoc::getStrokeDirType() {
+	return this->m_pCurrentDirMethod;
+}
+
+//---------------------------------------------------------
 // Return the width of brush
 //---------------------------------------------------------
-int ImpressionistDoc::getBrushWidth() {
+int ImpressionistDoc::getLineWidth() {
 	return this->m_pUI->getBrushWidth();
 }
 
