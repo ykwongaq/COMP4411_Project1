@@ -54,6 +54,10 @@ ImpressionistDoc::ImpressionistDoc()
 
 	// Create DirectionDrawer
 	this->m_pDirDrawer = new DirectionDrawer();
+
+	// Initialize scattering parameter
+	this->scatRange = 20;
+	this->scatFactor = 4;
 }
 
 
@@ -71,6 +75,22 @@ void ImpressionistDoc::setUI(ImpressionistUI* ui)
 char* ImpressionistDoc::getImageName() 
 {
 	return m_imageName;
+}
+
+int ImpressionistDoc::getScatRange() const {
+	return this->scatRange;
+}
+
+void ImpressionistDoc::setScatRange(const int &scatRange) {
+	this->scatRange = scatRange;
+}
+
+int ImpressionistDoc::getScatFactor() const {
+	return this->scatFactor;
+}
+
+void ImpressionistDoc::setScatFactor(const int &scatFactor) {
+	this->scatFactor = scatFactor;
 }
 
 //---------------------------------------------------------

@@ -24,19 +24,23 @@ public:
 	int		saveImage(char *iname);			// called by the UI to save image
 
 
-	int			clearCanvas();						// called by the UI to clear the drawing canvas
-	void		setBrushType(int type);				// called by the UI to set the brushType
-	void		setStrokeDirType(int type);			// called by the UI to set the stroke direction
-	STROKE_DIR	getStrokeDirType();					// get the stroke direction method
-	int			getLineWidth();						// get the brush width from UI
-	void		setLineWidth(const int &width);		// set the line width
-	int			getLineAngle();						// get the line angle from UI
-	void		setLineAngle(const int &angle);		// set the line angle
-	float		getAlpha();							// get the alpha from UI
-	void		setAlpha(const float &alpha);		// set the alpha
-	int			getSize();							// get the UI size
-	void		setSize(const int &size);			// set the UI size
-	char*		getImageName();						// get the current image name
+	int			clearCanvas();							// called by the UI to clear the drawing canvas
+	void		setBrushType(int type);					// called by the UI to set the brushType
+	void		setStrokeDirType(int type);				// called by the UI to set the stroke direction
+	STROKE_DIR	getStrokeDirType();						// get the stroke direction method
+	int			getLineWidth();							// get the brush width from UI
+	void		setLineWidth(const int &width);			// set the line width
+	int			getLineAngle();							// get the line angle from UI
+	void		setLineAngle(const int &angle);			// set the line angle
+	float		getAlpha();								// get the alpha from UI
+	void		setAlpha(const float &alpha);			// set the alpha
+	int			getSize();								// get the UI size
+	void		setSize(const int &size);				// set the UI size
+	char*		getImageName();							// get the current image name
+	int			getScatRange() const;					// get the scatteredRange
+	void		setScatRange(const int &scatRange);		// set the scatteredRange
+	int			getScatFactor() const;					// get the scatteredFactor
+	void		setScatFactor(const int &scatFactor);	// set the scatteredFactor
 	
 
 // Attributes
@@ -50,6 +54,10 @@ public:
 	// Bitmaps for original image and painting.
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucPainting;
+
+	// Scattering parameter
+	int				scatRange;		// Define the distance range of scattered from the source
+	int				scatFactor;	// Define the number of scattered primitives generated
 
 
 	// The current active brush.
