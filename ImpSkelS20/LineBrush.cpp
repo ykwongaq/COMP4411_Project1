@@ -24,10 +24,16 @@
 
 extern float frand();
 
+// ------------------------------------
+// Constructor
+// ------------------------------------
 LineBrush::LineBrush(ImpressionistDoc *pDoc, char *name) : ImpBrush(pDoc, name) {
 	this->prevSource = Point(0, 0);
 }
 
+// ---------------------------------------------
+// Start Painting (Left mouse key pressed down)
+// ---------------------------------------------
 void LineBrush::BrushBegin(const Point source, const Point target) {
 
 	ImpressionistDoc *pDoc = this->GetDocument();
@@ -40,6 +46,9 @@ void LineBrush::BrushBegin(const Point source, const Point target) {
 	this->BrushMove(source, target);
 }	
 
+// ---------------------------------------------
+// Start Painting (Left mouse key dragging)
+// ---------------------------------------------
 void LineBrush::BrushMove(const Point source, const Point target) {
 
 	ImpressionistDoc *pDoc = this->GetDocument();
@@ -54,7 +63,7 @@ void LineBrush::BrushMove(const Point source, const Point target) {
 	GLint length = pDoc->getSize();
 	GLfloat alpha = pDoc->getAlpha();
 
-	// Set the rotation angle
+	// Set the rotation angle based on stroke direction selection
 	GLfloat rotateAngle = 0.0;
 	switch(pDoc->getStrokeDirType()) {
 		case STROKE_DIR::STR_SLIDER_OR_MOUSE:
@@ -107,6 +116,9 @@ void LineBrush::BrushMove(const Point source, const Point target) {
 	this->prevSource = target;
 }
 
+// ---------------------------------------------
+// End Painting (Left mouse key un-pressed)
+// ---------------------------------------------
 void LineBrush::BrushEnd(const Point source, const Point target) {
 	// Do nothing
 }

@@ -27,10 +27,11 @@ private:
 	// Sobel operator for gradient calculation
 	const int sobelXOperator[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
 	const int sobelYoperator[9] = {1, 2, 1, 0, 0, 0, -1, -2, -1};
-
+	
+	// Get the 3-by-3 gray scale matrix around the source
 	vector<int> getGrayPixelGrid(const Point source);
 
-	Point prevSource;
+	Point prevSource;	// Previous location of source. Used to track bursh movement
 };
 
 #endif
