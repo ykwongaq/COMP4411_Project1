@@ -48,6 +48,10 @@ void PaintView::draw()
 	glDrawBuffer(GL_FRONT_AND_BACK);
 	#endif // !MESA
 
+	// Enable alpha
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	if(!valid())
 	{
 
@@ -117,23 +121,35 @@ void PaintView::draw()
 			RestoreContent();
 			break;
 		case RIGHT_MOUSE_DOWN:
-
+			//m_pDoc->m_pDirDrawer->DrawBegin(target);
 			break;
 		case RIGHT_MOUSE_DRAG:
+			//m_pDoc->m_pDirDrawer->DrawMove(target);
 
 			break;
 		case RIGHT_MOUSE_UP:
+		{
+			//m_pDoc->m_pDirDrawer->DrawEnd(target);
 
-			break;
+			//SaveCurrentContent();
+			//RestoreContent();
 
+			//int rotateAngle = m_pDoc->m_pDirDrawer->getAngle();
+			//m_pDoc->m_pUI->setRotationAngle(rotateAngle);
+
+		}	break;
 		default:
 			printf("Unknown event!!\n");		
 			break;
 		}
+		
+		// Set the current source as the previous source
+		//this->m_pDoc->setPrevSource(source);
 	}
 
 	glFlush();
 
+	
 	#ifndef MESA
 	// To avoid flicker on some machines.
 	glDrawBuffer(GL_BACK);
