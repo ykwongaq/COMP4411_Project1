@@ -116,40 +116,37 @@ void PaintView::draw()
 			break;
 		case LEFT_MOUSE_UP:
 			m_pDoc->m_pCurrentBrush->BrushEnd( source, target );
-
-			SaveCurrentContent();
-			RestoreContent();
+			SaveCurrentContent();	// Save the drawn image
+			RestoreContent();		// Clear the hidden canvas
 			break;
 		case RIGHT_MOUSE_DOWN:
-			//m_pDoc->m_pDirDrawer->DrawBegin(target);
+			m_pDoc->m_pDirDrawer->DrawBegin(target);
 			break;
 		case RIGHT_MOUSE_DRAG:
-			//m_pDoc->m_pDirDrawer->DrawMove(target);
-
+			RestoreContent();		// Clear the hidden canvas first in order to remove the previous red line
+			m_pDoc->m_pDirDrawer->DrawMove(target);
+			glFlush();				// Show the currently drawn red line
 			break;
 		case RIGHT_MOUSE_UP:
-		{
-			//m_pDoc->m_pDirDrawer->DrawEnd(target);
+	
+			RestoreContent();		// Clear the hidden canvas first in order to remove the previous red line
+			m_pDoc->m_pDirDrawer->DrawEnd(target);
+			glFlush();				// Show the currently drawn red line
 
-			//SaveCurrentContent();
-			//RestoreContent();
+			RestoreContent();		// Clear the current red line as well
 
-			//int rotateAngle = m_pDoc->m_pDirDrawer->getAngle();
-			//m_pDoc->m_pUI->setRotationAngle(rotateAngle);
+			m_pDoc->setLineAngle(m_pDoc->m_pDirDrawer->getAngle()); // Set the angle
+			m_pDoc->setSize(m_pDoc->m_pDirDrawer->getSize());		// Set the size
 
-		}	break;
+			break;
 		default:
 			printf("Unknown event!!\n");		
 			break;
 		}
-		
-		// Set the current source as the previous source
-		//this->m_pDoc->setPrevSource(source);
 	}
 
 	glFlush();
 
-	
 	#ifndef MESA
 	// To avoid flicker on some machines.
 	glDrawBuffer(GL_BACK);

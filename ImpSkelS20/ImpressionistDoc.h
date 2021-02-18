@@ -66,7 +66,7 @@ public:
 	// Used to draw the direction angle for line
 	DirectionDrawer		*m_pDirDrawer;
 
-	// Parameter Setting
+	// Parameter Boundary Setting
 	static const int MIN_SIZE = 1;
 	static const int MAX_SIZE = 40;
 	static const int MIN_WIDTH = 1;

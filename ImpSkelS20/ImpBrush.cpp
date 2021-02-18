@@ -57,7 +57,7 @@ void ImpBrush::SetColor (const Point source)
 }
 
 float Point::distFrom(const Point &otherPoint) {
-	return sqrt((otherPoint.x - this->x)^2 + (otherPoint.y - this->y)^2);
+	return sqrt(pow(otherPoint.x - this->x, 2) + pow(otherPoint.y - this->y, 2));
 }
 
 float Point::angleFrom(const Point &otherPoint) {
