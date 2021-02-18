@@ -14,9 +14,12 @@
 
 // Include individual brush headers here.
 #include "PointBrush.h"
-#include "LineBrush.h"
+//#include "LineBrush.h"
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
+
+const float ImpressionistDoc::MIN_ALPHA = 0.0;
+const float ImpressionistDoc::MAX_ALPHA = 1.0;
 
 ImpressionistDoc::ImpressionistDoc() 
 {
@@ -36,7 +39,7 @@ ImpressionistDoc::ImpressionistDoc()
 
 	// Note: You should implement these 5 brushes.  They are set the same (PointBrush) for now
 	ImpBrush::c_pBrushes[BRUSH_LINES]				
-		= new LineBrush( this, "Lines" );
+		= new PointBrush( this, "Lines" );
 	ImpBrush::c_pBrushes[BRUSH_CIRCLES]				
 		= new PointBrush( this, "Circles" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_POINTS]	
@@ -49,6 +52,8 @@ ImpressionistDoc::ImpressionistDoc()
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
 
+	// Create DirectionDrawer
+	this->m_pDirDrawer = new DirectionDrawer();
 }
 
 
@@ -100,11 +105,19 @@ int ImpressionistDoc::getLineWidth() {
 	return this->m_pUI->getBrushWidth();
 }
 
+void ImpressionistDoc::setLineWidth(const int &width) {
+	this->m_pUI->setBrushWidth(width);
+}
+
 //---------------------------------------------------------
 // Return the rotation angle of line
 //---------------------------------------------------------
 int ImpressionistDoc::getLineAngle() {
 	return this->m_pUI->getRotationAngle();
+}
+
+void ImpressionistDoc::setLineAngle(const int &angle) {
+	this->m_pUI->setRotationAngle(angle);
 }
 
 //---------------------------------------------------------
@@ -114,12 +127,27 @@ float ImpressionistDoc::getAlpha() {
 	return this->m_pUI->getAlpha();
 }
 
+void ImpressionistDoc::setAlpha(const float &alpha) {
+	this->m_pUI->setAlpha(alpha);
+}
+
 //---------------------------------------------------------
 // Returns the size of the brush.
 //---------------------------------------------------------
 int ImpressionistDoc::getSize()
 {
 	return m_pUI->getSize();
+}
+
+void ImpressionistDoc::setSize(const int &size) {
+	if (size < ImpressionistDoc::MIN_SIZE)
+		this->m_nSize = ImpressionistDoc::MIN_SIZE;
+	else if (size > ImpressionistDoc::MAX_SIZE)
+		this->m_nSize = ImpressionistDoc::MAX_SIZE;
+	else
+		this->m_nSize = size;
+
+	this->m_pUI->setSize(size);
 }
 
 //---------------------------------------------------------

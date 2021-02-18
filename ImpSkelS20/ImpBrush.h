@@ -37,7 +37,8 @@ class Point
 public:
 	Point() {};
 	Point(int xx, int yy) { x = xx; y = yy; };
-
+	float distFrom(const Point &otherPoint);
+	float angleFrom(const Point &otherPoint);
 	int x, y;
 };
 

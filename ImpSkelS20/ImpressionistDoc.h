@@ -9,6 +9,7 @@
 
 #include "impressionist.h"
 #include "bitmap.h"
+#include "DirectionDrawer.h"
 
 class ImpressionistUI;
 
@@ -23,16 +24,19 @@ public:
 	int		saveImage(char *iname);			// called by the UI to save image
 
 
-	int     clearCanvas();                  // called by the UI to clear the drawing canvas
-	void	setBrushType(int type);			// called by the UI to set the brushType
-	void	setStrokeDirType(int type);		// called by the UI to set the stroke direction
-	STROKE_DIR	getStrokeDirType();			// get the stroke direction method
-	int		getLineWidth();					// get the brush width from UI
-	int		getLineAngle();					// get the line angle from UI
-	float	getAlpha();						// get the alpha from UI
-	int		getSize();						// get the UI size
-	void	setSize(int size);				// set the UI size
-	char*	getImageName();					// get the current image name
+	int			clearCanvas();						// called by the UI to clear the drawing canvas
+	void		setBrushType(int type);				// called by the UI to set the brushType
+	void		setStrokeDirType(int type);			// called by the UI to set the stroke direction
+	STROKE_DIR	getStrokeDirType();					// get the stroke direction method
+	int			getLineWidth();						// get the brush width from UI
+	void		setLineWidth(const int &width);		// set the line width
+	int			getLineAngle();						// get the line angle from UI
+	void		setLineAngle(const int &angle);		// set the line angle
+	float		getAlpha();							// get the alpha from UI
+	void		setAlpha(const float &alpha);		// set the alpha
+	int			getSize();							// get the UI size
+	void		setSize(const int &size);			// set the UI size
+	char*		getImageName();						// get the current image name
 	
 
 // Attributes
@@ -58,6 +62,19 @@ public:
 	int m_nSize;
 
 	ImpressionistUI*	m_pUI;
+
+	// Used to draw the direction angle for line
+	DirectionDrawer		*m_pDirDrawer;
+
+	// Parameter Setting
+	static const int MIN_SIZE = 1;
+	static const int MAX_SIZE = 40;
+	static const int MIN_WIDTH = 1;
+	static const int MAX_WIDTH = 40;
+	static const int MIN_ANGLE = 0;
+	static const int MAX_ANGLE = 359;
+	static const float MIN_ALPHA;	// 0.0
+	static const float MAX_ALPHA;	// 1.0
 
 // Operations
 public:

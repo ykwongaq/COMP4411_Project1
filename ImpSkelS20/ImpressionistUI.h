@@ -58,10 +58,13 @@ public:
 	void				setSize(int size);
 
 	int					getBrushWidth();
+	void				setBrushWidth(const int &width);
 
 	int					getRotationAngle();
+	void				setRotationAngle(const int& angle);
 
 	float				getAlpha();
+	void				setAlpha(const float &alpha);
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document

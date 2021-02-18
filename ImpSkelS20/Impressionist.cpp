@@ -48,3 +48,18 @@ int irand(int max)
 {
 	return rand()%max;
 }
+
+// -----------------------------------
+// Convert degree to radian
+// -----------------------------------
+float deg2Rad(const float &degree) {
+	return degree * M_PI / 180;
+}
+
+// -----------------------------------
+// Convert radian to degree
+// -----------------------------------
+float rad2Deg(const float &radian) {
+	return radian * 180 / M_PI;
+}
+

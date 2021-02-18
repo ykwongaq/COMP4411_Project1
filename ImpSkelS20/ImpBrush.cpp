@@ -7,6 +7,9 @@
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
 #include "ImpBrush.h"
+#include <math.h>
+
+extern float rad2Deg(const float &);
 
 // Static class member initializations
 int			ImpBrush::c_nBrushCount	= 0;
@@ -53,3 +56,17 @@ void ImpBrush::SetColor (const Point source)
 	glColor4ubv( color );
 }
 
+float Point::distFrom(const Point &otherPoint) {
+	return sqrt((otherPoint.x - this->x)^2 + (otherPoint.y - this->y)^2);
+}
+
+float Point::angleFrom(const Point &otherPoint) {
+
+	int dx = otherPoint.x - this->x;
+	int dy = otherPoint.y - this->y;
+
+	if (dx == 0)	return 90.0;
+	if (dy == 0)	return 0.0;
+
+	return rad2Deg(atan2(dy, dx));
+}

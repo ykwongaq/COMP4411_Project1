@@ -330,7 +330,7 @@ void ImpressionistUI::cb_rotationAngle(Fl_Widget *o, void *v) {
 // Called by the UI when the alpha slider is moved
 //-----------------------------------------------------------
 void ImpressionistUI::cb_alpha(Fl_Widget *o, void *v) {
-	( (ImpressionistUI *) ( o->user_data() ) )->m_nAlpha = int(( (Fl_Slider *) o )->value());
+	( (ImpressionistUI *) ( o->user_data() ) )->m_nAlpha = float(( (Fl_Slider *) o )->value());
 }
 
 //---------------------------------- per instance functions --------------------------------------
@@ -386,10 +386,16 @@ int ImpressionistUI::getSize()
 //-------------------------------------------------
 void ImpressionistUI::setSize( int size )
 {
-	m_nSize=size;
-
-	if (size<=40) 
-		m_BrushSizeSlider->value(m_nSize);
+	if (size > ImpressionistDoc::MAX_SIZE) {
+		this->m_BrushSizeSlider->value(ImpressionistDoc::MAX_SIZE);
+		this->m_nSize = ImpressionistDoc::MAX_SIZE;
+	} else if (size < ImpressionistDoc::MIN_SIZE) {
+		this->m_BrushSizeSlider->value(ImpressionistDoc::MIN_SIZE);
+		this->m_nSize = ImpressionistDoc::MIN_SIZE;
+	} else {
+		this->m_BrushSizeSlider->value(size);
+		this->m_nSize = size;
+	}
 }
 
 //-------------------------------------------------
@@ -397,6 +403,19 @@ void ImpressionistUI::setSize( int size )
 //-------------------------------------------------
 int ImpressionistUI::getBrushWidth() {
 	return this->m_nBrushWidth;
+}
+
+void ImpressionistUI::setBrushWidth(const int &width) {
+	if (width > ImpressionistDoc::MAX_WIDTH) {
+		this->m_BrushSizeSlider->value(ImpressionistDoc::MAX_WIDTH);
+		this->m_nBrushWidth = ImpressionistDoc::MAX_WIDTH;
+	} else if (width < ImpressionistDoc::MIN_WIDTH) {
+		this->m_BrushSizeSlider->value(ImpressionistDoc::MIN_WIDTH);
+		this->m_nBrushWidth = ImpressionistDoc::MIN_WIDTH;
+	} else {
+		this->m_BrushSizeSlider->value(width);
+		this->m_nBrushWidth = width;
+	}
 }
 
 //-------------------------------------------------
@@ -407,10 +426,39 @@ int ImpressionistUI::getRotationAngle() {
 }
 
 //-------------------------------------------------
+// Set the rotation angle
+//-------------------------------------------------
+void ImpressionistUI::setRotationAngle(const int& angle) {
+	if (angle > ImpressionistDoc::MAX_ANGLE) {
+		this->m_LineAngleSlider->value(ImpressionistDoc::MAX_ALPHA);
+		this->m_nRotationAngle = ImpressionistDoc::MAX_ANGLE;
+	} else if (angle < ImpressionistDoc::MIN_ANGLE) {
+		this->m_LineAngleSlider->value(ImpressionistDoc::MIN_ANGLE);
+		this->m_nRotationAngle = ImpressionistDoc::MIN_ANGLE;
+	} else {
+		this->m_LineAngleSlider->value(this->m_nRotationAngle);
+		this->m_nRotationAngle = angle;
+	}
+}
+
+//-------------------------------------------------
 // Return the opacity alpha
 //-------------------------------------------------
 float ImpressionistUI::getAlpha() {
 	return this->m_nAlpha;
+}
+
+void ImpressionistUI::setAlpha(const float &alpha) {
+	if (alpha > ImpressionistDoc::MAX_ALPHA) {
+		this->m_AlphaSlider->value(ImpressionistDoc::MAX_ALPHA);
+		this->m_nAlpha = ImpressionistDoc::MAX_ALPHA;
+	} else if (alpha > ImpressionistDoc::MIN_ALPHA) {
+		this->m_AlphaSlider->value(ImpressionistDoc::MIN_ALPHA);
+		this->m_nAlpha = ImpressionistDoc::MIN_ALPHA;
+	} else {
+		this->m_AlphaSlider->value(alpha);
+		this->m_nAlpha = alpha;
+	}
 }
 
 // Main menu definition
@@ -495,10 +543,12 @@ ImpressionistUI::ImpressionistUI() {
 	m_BrushTypeChoice->menu(brushTypeMenu);
 	m_BrushTypeChoice->callback(cb_brushChoice);
 
+	// Add clear canvas button to the dialog
 	m_ClearCanvasButton = new Fl_Button(240,10,150,25,"&Clear Canvas");
 	m_ClearCanvasButton->user_data((void*)(this));
 	m_ClearCanvasButton->callback(cb_clear_canvas_button);
 
+	// Add stroke direction method to the dialog
 	m_StrokeDirChoice = new Fl_Choice(114, 40, 150, 25, "&Stroke Direction");
 	m_StrokeDirChoice->user_data((void *) ( this ));
 	m_StrokeDirChoice->menu(strokeDirMenu);
@@ -510,8 +560,8 @@ ImpressionistUI::ImpressionistUI() {
 	m_BrushSizeSlider->type(FL_HOR_NICE_SLIDER);
     m_BrushSizeSlider->labelfont(FL_COURIER);
     m_BrushSizeSlider->labelsize(12);
-	m_BrushSizeSlider->minimum(1);
-	m_BrushSizeSlider->maximum(40);
+	m_BrushSizeSlider->minimum(ImpressionistDoc::MIN_SIZE);
+	m_BrushSizeSlider->maximum(ImpressionistDoc::MAX_SIZE);
 	m_BrushSizeSlider->step(1);
 	m_BrushSizeSlider->value(m_nSize);
 	m_BrushSizeSlider->align(FL_ALIGN_RIGHT);
@@ -523,34 +573,36 @@ ImpressionistUI::ImpressionistUI() {
 	m_BrushWidthSlider->type(FL_HOR_NICE_SLIDER);
 	m_BrushWidthSlider->labelfont(FL_COURIER);
 	m_BrushWidthSlider->labelsize(12);
-	m_BrushWidthSlider->minimum(1);
-	m_BrushWidthSlider->maximum(40);
+	m_BrushWidthSlider->minimum(ImpressionistDoc::MIN_WIDTH);
+	m_BrushWidthSlider->maximum(ImpressionistDoc::MAX_WIDTH);
 	m_BrushWidthSlider->step(1);
 	m_BrushWidthSlider->value(this->m_nBrushWidth);
 	m_BrushWidthSlider->align(FL_ALIGN_RIGHT);
 	m_BrushWidthSlider->callback(cb_widthSlides);
 	m_BrushWidthSlider->deactivate();
 
+	// Add rotation angle slider to the dialog
 	m_LineAngleSlider = new Fl_Value_Slider(10, 130, 300, 20, "Line Angle");
 	m_LineAngleSlider->user_data((void *) ( this ));	// record self to be used by static callback functions
 	m_LineAngleSlider->type(FL_HOR_NICE_SLIDER);
 	m_LineAngleSlider->labelfont(FL_COURIER);
 	m_LineAngleSlider->labelsize(12);
-	m_LineAngleSlider->minimum(0);
-	m_LineAngleSlider->maximum(359);
+	m_LineAngleSlider->minimum(ImpressionistDoc::MIN_ANGLE);
+	m_LineAngleSlider->maximum(ImpressionistDoc::MAX_ANGLE);
 	m_LineAngleSlider->step(1);
 	m_LineAngleSlider->value(this->m_nRotationAngle);
 	m_LineAngleSlider->align(FL_ALIGN_RIGHT);
 	m_LineAngleSlider->callback(cb_rotationAngle);
 	m_LineAngleSlider->deactivate();
 
+	// Add alpha slider to the dialog
 	m_AlphaSlider = new Fl_Value_Slider(10, 155, 300, 20, "Alpha");
 	m_AlphaSlider->user_data((void *) ( this ));	// record self to be used by static callback functions
 	m_AlphaSlider->type(FL_HOR_NICE_SLIDER);
 	m_AlphaSlider->labelfont(FL_COURIER);
 	m_AlphaSlider->labelsize(12);
-	m_AlphaSlider->minimum(0);
-	m_AlphaSlider->maximum(1);
+	m_AlphaSlider->minimum(ImpressionistDoc::MIN_ALPHA);
+	m_AlphaSlider->maximum(ImpressionistDoc::MAX_ALPHA);
 	m_AlphaSlider->step(0.01);
 	m_AlphaSlider->value(this->m_nAlpha);
 	m_AlphaSlider->align(FL_ALIGN_RIGHT);
