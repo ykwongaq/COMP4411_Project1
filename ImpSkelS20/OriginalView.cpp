@@ -22,6 +22,12 @@ OriginalView::OriginalView(int			x,
 	m_nWindowWidth	= w;
 	m_nWindowHeight	= h;
 
+	// Cursor Setting
+	this->cursor = Point(-1, -1);
+	this->cursorSize = 3;
+	this->cursorColor[0] = 255;
+	this->cursorColor[1] = 0;
+	this->cursorColor[2] = 0;
 }
 
 void OriginalView::draw()
@@ -75,6 +81,14 @@ void OriginalView::draw()
 		glDrawBuffer( GL_BACK );
 		glDrawPixels( drawWidth, drawHeight, GL_RGB, GL_UNSIGNED_BYTE, bitstart );
 
+		// Draw the cursor
+		if (!this->isOutside(this->cursor)) {
+			glPointSize(this->cursorSize);
+			glColor3ubv(this->cursorColor);
+			glBegin(GL_POINTS);
+			glVertex2d(cursor.x, cursor.y);
+			glEnd();
+		}
 	}
 			
 	glFlush();
@@ -89,5 +103,19 @@ void OriginalView::resizeWindow(int	width,
 								int	height)
 {
 	resize(x(), y(), width, height);
+}
+
+void OriginalView::setCursor(const Point &cursor) {
+	this->cursor.x = cursor.x;
+	this->cursor.y = this->m_nWindowHeight - cursor.y;
+}
+
+void OriginalView::displayCursor() {
+	redraw();
+}
+
+bool OriginalView::isOutside(const Point &point) {
+	return point.x < 0 || point.x > this->m_nWindowWidth ||
+		   point.y < 0 || point.y > this->m_nWindowHeight;
 }
 

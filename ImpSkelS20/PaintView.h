@@ -43,6 +43,8 @@ private:
 			m_nWindowWidth, 
 			m_nWindowHeight;
 
+	// Check the given point exceed the boundary of paint view
+	bool isOutside(const Point &point);
 };
 
 #endif
