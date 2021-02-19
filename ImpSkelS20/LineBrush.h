@@ -22,7 +22,8 @@ public:
 	void BrushBegin(const Point source, const Point target);
 	void BrushMove(const Point source, const Point target);
 	void BrushEnd(const Point source, const Point target);
-private:
+
+protected:
 
 	// Sobel operator for gradient calculation
 	const int sobelXOperator[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
