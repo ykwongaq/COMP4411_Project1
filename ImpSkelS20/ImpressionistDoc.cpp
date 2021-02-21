@@ -101,6 +101,19 @@ void ImpressionistDoc::setScatFactor(const int &scatFactor) {
 }
 
 //---------------------------------------------------------
+// Called by the UI to swap the original view and the
+// paint view
+//---------------------------------------------------------
+void ImpressionistDoc::swapView() {
+	unsigned char *temp = this->m_ucBitmap;
+	this->m_ucBitmap = this->m_ucPainting;
+	this->m_ucPainting = temp;
+
+	this->m_pUI->m_paintView->refresh();
+	this->m_pUI->m_origView->refresh();
+}
+
+//---------------------------------------------------------
 // Called by the UI when the user changes the brush type.
 // type: one of the defined brush types.
 //---------------------------------------------------------

@@ -333,6 +333,14 @@ void ImpressionistUI::cb_alpha(Fl_Widget *o, void *v) {
 	( (ImpressionistUI *) ( o->user_data() ) )->m_nAlpha = float(( (Fl_Slider *) o )->value());
 }
 
+//------------------------------------------------
+// Swap the original view and the paint view
+//------------------------------------------------
+void ImpressionistUI::cb_swabView(Fl_Menu_ *o, void *v) {
+	ImpressionistDoc *pDoc = ImpressionistUI::whoami(o)->getDocument();
+	pDoc->swapView();
+}
+
 //---------------------------------- per instance functions --------------------------------------
 
 //------------------------------------------------
@@ -470,6 +478,10 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Clear Canvas", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 		
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
+		{ 0 },
+
+	{"&Bonus",		0, 0, 0, FL_SUBMENU},
+		{"&Swap Image",		FL_ALT+'s', (Fl_Callback*) ImpressionistUI::cb_swabView},
 		{ 0 },
 
 	{ "&Help",		0, 0, 0, FL_SUBMENU },
@@ -610,5 +622,4 @@ ImpressionistUI::ImpressionistUI() {
 	m_AlphaSlider->callback(cb_alpha);
 
     m_brushDialog->end();	
-
 }

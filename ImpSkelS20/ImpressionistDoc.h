@@ -25,6 +25,8 @@ public:
 
 
 	int			clearCanvas();							// called by the UI to clear the drawing canvas
+
+	// Accessors and Modifier
 	void		setBrushType(int type);					// called by the UI to set the brushType
 	void		setStrokeDirType(int type);				// called by the UI to set the stroke direction
 	STROKE_DIR	getStrokeDirType();						// get the stroke direction method
@@ -41,6 +43,8 @@ public:
 	void		setScatRange(const int &scatRange);		// set the scatteredRange
 	int			getScatFactor() const;					// get the scatteredFactor
 	void		setScatFactor(const int &scatFactor);	// set the scatteredFactor
+
+	void		swapView();								// called by UI to swap the original and the paint view
 	
 
 // Attributes

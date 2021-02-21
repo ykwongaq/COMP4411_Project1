@@ -90,6 +90,7 @@ private:
 	static void	cb_clear_canvas(Fl_Menu_* o, void* v);
 	static void	cb_exit(Fl_Menu_* o, void* v);
 	static void	cb_about(Fl_Menu_* o, void* v);
+	static void cb_swabView(Fl_Menu_ *o, void *v);
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
 	static void	cb_clear_canvas_button(Fl_Widget* o, void* v);
 	static void	cb_sizeSlides(Fl_Widget* o, void* v);
@@ -97,7 +98,7 @@ private:
 	static void cb_widthSlides(Fl_Widget *o, void *v);
 	static void cb_rotationAngle(Fl_Widget *o, void *v);
 	static void cb_alpha(Fl_Widget *o, void *v);
-
+	
 };
 
 #endif
