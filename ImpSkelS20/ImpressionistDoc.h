@@ -71,8 +71,6 @@ public:
 
 	ImpressionistUI*	m_pUI;
 
-	// Used to draw the direction angle for line
-	DirectionDrawer		*m_pDirDrawer;
 
 	// Parameter Boundary Setting
 	static const int MIN_SIZE = 1;

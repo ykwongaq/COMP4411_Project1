@@ -14,7 +14,8 @@
 
 // Include individual brush headers here.
 #include "PointBrush.h"
-#include "LineBrush.h"
+#include "CircleBrush.h"
+
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
 
@@ -39,9 +40,9 @@ ImpressionistDoc::ImpressionistDoc()
 
 	// Note: You should implement these 5 brushes.  They are set the same (PointBrush) for now
 	ImpBrush::c_pBrushes[BRUSH_LINES]				
-		= new LineBrush( this, "Lines" );
+		= new PointBrush( this, "Lines" );
 	ImpBrush::c_pBrushes[BRUSH_CIRCLES]				
-		= new PointBrush( this, "Circles" );
+		= new CircleBrush( this, "Circles" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_POINTS]	
 		= new PointBrush( this, "Scattered Points" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_LINES]		
@@ -51,9 +52,6 @@ ImpressionistDoc::ImpressionistDoc()
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
-
-	// Create DirectionDrawer
-	this->m_pDirDrawer = new DirectionDrawer();
 
 	// Initialize scattering parameter
 	this->scatRange = 20;
