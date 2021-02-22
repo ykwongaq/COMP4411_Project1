@@ -31,9 +31,10 @@ ImpressionistDoc::ImpressionistDoc()
 	// Set NULL image name as init. 
 	m_imageName[0]	='\0';	
 
-	m_nWidth		= -1;
-	m_ucBitmap		= NULL;
-	m_ucPainting	= NULL;
+	m_nWidth			= -1;
+	m_ucBitmap			= NULL;
+	m_ucPainting		= NULL;
+	m_ucPrevPainting	= NULL;
 
 
 	// create one instance of each brush
@@ -125,6 +126,15 @@ void ImpressionistDoc::swapView() {
 
 	this->m_pUI->m_paintView->refresh();
 	this->m_pUI->m_origView->refresh();
+}
+
+void ImpressionistDoc::undo() {
+	memcpy(this->m_ucPainting, this->m_ucPrevPainting, this->m_nPaintWidth * this->m_nPaintHeight * 3 * sizeof(unsigned char));
+	this->m_pUI->m_paintView->refresh();
+}
+
+void ImpressionistDoc::savePainting() const {
+	memcpy(this->m_ucPrevPainting, this->m_ucPainting, this->m_nPaintWidth * this->m_nPaintHeight * 3 * sizeof(unsigned char));
 }
 
 //---------------------------------------------------------
@@ -231,6 +241,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	// release old storage
 	if ( m_ucBitmap ) delete [] m_ucBitmap;
 	if ( m_ucPainting ) delete [] m_ucPainting;
+	if (m_ucPrevPainting) delete [] m_ucPrevPainting;
 
 	m_ucBitmap		= data;
 
@@ -242,6 +253,8 @@ int ImpressionistDoc::loadImage(char *iname)
 								m_pUI->m_mainWindow->y(), 
 								width*2, 
 								height+25);
+
+	this->m_ucPrevPainting = new unsigned char[width * height * 3];
 
 	// display it on origView
 	m_pUI->m_origView->resizeWindow(width, height);	

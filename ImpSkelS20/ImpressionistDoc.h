@@ -10,6 +10,7 @@
 #include "impressionist.h"
 #include "bitmap.h"
 #include "DirectionDrawer.h"
+#include <stack>
 
 class ImpressionistUI;
 
@@ -50,6 +51,8 @@ public:
 	float		getBlueScale() const;
 
 	void		swapView();								// called by UI to swap the original and the paint view
+	void		undo();									// called by UI to undo painting
+	void		savePainting() const;					// called by Paint View to save the painted color
 	
 
 // Attributes
@@ -62,8 +65,9 @@ public:
 					m_nPaintHeight;	
 
 	// Bitmaps for original image and painting.
-	unsigned char*	m_ucBitmap;
-	unsigned char*	m_ucPainting;
+	unsigned char	*m_ucBitmap;
+	unsigned char	*m_ucPainting;
+	unsigned char	*m_ucPrevPainting;
 
 	// Scattering parameter
 	int				scatRange;		// Define the distance range of scattered from the source
@@ -85,18 +89,20 @@ public:
 	DirectionDrawer		*m_pDirDrawer;
 
 	// Parameter Boundary Setting
-	static const int MIN_SIZE = 1;
-	static const int MAX_SIZE = 40;
-	static const int MIN_WIDTH = 1;
-	static const int MAX_WIDTH = 40;
-	static const int MIN_ANGLE = 0;
-	static const int MAX_ANGLE = 359;
-	static const float MIN_ALPHA;	// 0.0
-	static const float MAX_ALPHA;	// 1.0
-	static const float MIN_COLOR_SCALE;
-	static const float MAX_COLOR_SCALE;
-	static const int MIN_COLOR_INDEX = 0;
-	static const int MAX_COLOR_INDEX = 255;
+	static const int		MIN_SIZE			= 1;
+	static const int		MAX_SIZE			= 40;
+	static const int		MIN_WIDTH			= 1;
+	static const int		MAX_WIDTH			= 40;
+	static const int		MIN_ANGLE			= 0;
+	static const int		MAX_ANGLE			= 359;
+	static const int		MIN_COLOR_INDEX		= 0;
+	static const int		MAX_COLOR_INDEX		= 255;
+	static const int		SAVING_CAPACITY		= 5;
+	static const float		MIN_ALPHA;		  //= 0.0
+	static const float		MAX_ALPHA;	      //= 1.0
+	static const float		MIN_COLOR_SCALE;  //= 0.0
+	static const float		MAX_COLOR_SCALE;  //= 1.0
+
 
 // Operations
 public:

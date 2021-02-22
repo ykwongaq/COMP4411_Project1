@@ -229,6 +229,10 @@ void ImpressionistUI::cb_color(Fl_Menu_ *o, void *v) {
 	whoami(o)->m_colorDialog->show();
 }
 
+void ImpressionistUI::cb_undo(Fl_Menu_ *o, void *v) {
+	ImpressionistUI::whoami(o)->getDocument()->undo();
+}
+
 //------------------------------------------------------------
 // Causes the Impressionist program to exit
 // Called by the UI when the quit menu item is chosen
@@ -525,6 +529,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{"&Bonus",		0, 0, 0, FL_SUBMENU},
 		{"&Swap Image",		FL_ALT+'s', (Fl_Callback*) ImpressionistUI::cb_swabView},
 		{"&Color",			FL_ALT+'c', (Fl_Callback*) ImpressionistUI::cb_color},
+		{"&Undo",			FL_ALT+'z', (Fl_Callback*) ImpressionistUI::cb_undo},
 		{ 0 },
 
 	{ "&Help",		0, 0, 0, FL_SUBMENU },

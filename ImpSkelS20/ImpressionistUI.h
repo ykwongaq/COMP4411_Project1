@@ -105,6 +105,7 @@ private:
 	static void	cb_brushes(Fl_Menu_* o, void* v);
 	static void	cb_clear_canvas(Fl_Menu_* o, void* v);
 	static void cb_color(Fl_Menu_ *o, void *v);
+	static void cb_undo(Fl_Menu_ *o, void *v);
 	static void	cb_exit(Fl_Menu_* o, void* v);
 	static void	cb_about(Fl_Menu_* o, void* v);
 	static void cb_swabView(Fl_Menu_ *o, void *v);
@@ -118,7 +119,6 @@ private:
 	static void cb_red(Fl_Widget *o, void *v);
 	static void cb_green(Fl_Widget *o, void *v);
 	static void cb_blue(Fl_Widget *o, void *v);
-	
 };
 
 #endif
