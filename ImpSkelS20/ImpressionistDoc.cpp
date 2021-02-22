@@ -23,6 +23,8 @@
 
 const float ImpressionistDoc::MIN_ALPHA = 0.0;
 const float ImpressionistDoc::MAX_ALPHA = 1.0;
+const float ImpressionistDoc::MIN_COLOR_SCALE = 0.0;
+const float ImpressionistDoc::MAX_COLOR_SCALE = 1.0;
 
 ImpressionistDoc::ImpressionistDoc() 
 {
@@ -98,6 +100,18 @@ int ImpressionistDoc::getScatFactor() const {
 
 void ImpressionistDoc::setScatFactor(const int &scatFactor) {
 	this->scatFactor = scatFactor;
+}
+
+float ImpressionistDoc::getRedScale() const {
+	return this->m_pUI->getRedScale();
+}
+
+float ImpressionistDoc::getGreenScale() const {
+	return this->m_pUI->getGreenScale();
+}
+
+float ImpressionistDoc::getBlueScale() const {
+	return this->m_pUI->getBlueScale();
 }
 
 //---------------------------------------------------------

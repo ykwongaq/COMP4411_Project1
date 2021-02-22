@@ -15,6 +15,7 @@
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Light_Button.H>
+#include <FL/Fl_Box.H>
 
 #include "Impressionist.h"
 #include "OriginalView.h"
@@ -45,6 +46,14 @@ public:
 
 	Fl_Button*          m_ClearCanvasButton;
 
+// For color dialog
+	Fl_Window*			m_colorDialog;
+	Fl_Slider*			m_RedSilder;
+	Fl_Slider*			m_GreenSilder;
+	Fl_Slider*			m_BlueSilder;
+
+
+
 	// Member functions
 	void				setDocument(ImpressionistDoc* doc);
 	ImpressionistDoc*	getDocument();
@@ -66,14 +75,21 @@ public:
 	float				getAlpha();
 	void				setAlpha(const float &alpha);
 
+	float				getRedScale() const;
+	float				getGreenScale() const;
+	float				getBlueScale() const;
+
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
 
 	// All attributes here
-	int		m_nSize;
-	int		m_nBrushWidth;
-	int		m_nRotationAngle;
-	float	m_nAlpha;
+	int			m_nSize;
+	int			m_nBrushWidth;
+	int			m_nRotationAngle;
+	float		m_nAlpha;
+	float		m_nRedScale;
+	float		m_nGreenScale;
+	float		m_nBlueScale;
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];
@@ -88,6 +104,7 @@ private:
 	static void	cb_save_image(Fl_Menu_* o, void* v);
 	static void	cb_brushes(Fl_Menu_* o, void* v);
 	static void	cb_clear_canvas(Fl_Menu_* o, void* v);
+	static void cb_color(Fl_Menu_ *o, void *v);
 	static void	cb_exit(Fl_Menu_* o, void* v);
 	static void	cb_about(Fl_Menu_* o, void* v);
 	static void cb_swabView(Fl_Menu_ *o, void *v);
@@ -98,6 +115,9 @@ private:
 	static void cb_widthSlides(Fl_Widget *o, void *v);
 	static void cb_rotationAngle(Fl_Widget *o, void *v);
 	static void cb_alpha(Fl_Widget *o, void *v);
+	static void cb_red(Fl_Widget *o, void *v);
+	static void cb_green(Fl_Widget *o, void *v);
+	static void cb_blue(Fl_Widget *o, void *v);
 	
 };
 
