@@ -12,9 +12,9 @@
 #ifndef GRAYSCALEBRUSH_H
 #define GRAYSCALEBRUSH_H
 
-#include "ScatteredPointBrush.h"
+#include "ScatteredLineBrush.h"
 
-class GrayScaleBrush : public ScatteredPointBrush {
+class GrayScaleBrush : public ScatteredLineBrush {
 public:
 	
 	// Constructor

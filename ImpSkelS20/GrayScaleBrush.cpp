@@ -15,7 +15,7 @@
 
 extern GLubyte RGBtoGray(GLubyte *rgb);
 
-GrayScaleBrush::GrayScaleBrush(ImpressionistDoc *pDoc, char *name) : ScatteredPointBrush(pDoc, name) {}
+GrayScaleBrush::GrayScaleBrush(ImpressionistDoc *pDoc, char *name) : ScatteredLineBrush(pDoc, name) {}
 
 void GrayScaleBrush::SetColor(const Point source) {
 
