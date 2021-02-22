@@ -41,8 +41,6 @@ void BlurBrush::SetColor(const Point source) {
 	for (int k = -1; k <= 1; k += 1) {
 		for (int l = -1; l <= 1; l += 1) {
 			memcpy(tempColor, pDoc->GetOriginalPixel(source.x + k, source.y + l), 3);
-			// We strictly need to convert to float!!!
-			// I spent a lot of time finding the solution
 			for (int n = 0; n < 3; n++)
 			{
 				tempColor1[n] = (float)tempColor[n];
@@ -85,7 +83,7 @@ void BlurBrush::BrushMove(const Point source, const Point target)
 	}
 
 	int size = pDoc->getSize();
-	// Set to one, we want to get color per pixel
+	// Set to one
 	glPointSize(1.0);
 
 	glBegin(GL_POINTS);
