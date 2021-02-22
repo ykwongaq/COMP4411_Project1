@@ -140,7 +140,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="BlurBrush.cpp" />
     <ClCompile Include="CircleBrush.cpp" />
+    <ClCompile Include="GlassMosaicBrush.cpp" />
     <ClCompile Include="ImpBrush.cpp" />
     <ClCompile Include="Impressionist.cpp" />
     <ClCompile Include="ImpressionistDoc.cpp" />
@@ -154,7 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h" />
+    <ClInclude Include="BlurBrush.h" />
     <ClInclude Include="CircleBrush.h" />
+    <ClInclude Include="GlassMosaicBrush.h" />
     <ClInclude Include="ScatteredRingBrush.h" />
     <ClInclude Include="ScatteredCircleBrush.h" />
     <ClInclude Include="RingBrush.h" />
