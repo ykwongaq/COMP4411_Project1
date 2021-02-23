@@ -121,6 +121,14 @@ float ImpressionistDoc::getBlueScale() const {
 	return this->m_pUI->getBlueScale();
 }
 
+char *ImpressionistDoc::getDissolveFileName() const {
+	return this->m_pUI->getDissolveFileName();
+}
+
+float ImpressionistDoc::getDissolveAlpha() const {
+	return this->m_pUI->getDissolveAlpha();
+}
+
 //---------------------------------------------------------
 // Called by the UI to swap the original view and the
 // paint view
@@ -141,6 +149,42 @@ void ImpressionistDoc::undo() {
 
 void ImpressionistDoc::savePainting() const {
 	memcpy(this->m_ucPrevPainting, this->m_ucPainting, this->m_nPaintWidth * this->m_nPaintHeight * 3 * sizeof(unsigned char));
+}
+
+void ImpressionistDoc::dissolve() {
+	
+	printf("dissolving");
+
+	if (this->m_ucPainting == NULL) return;
+	
+	unsigned char *otherBitMap;
+	int	otherWidth = 0, otherHeight = 0;
+
+	if ((otherBitMap = readBMP(this->getDissolveFileName(), otherWidth, otherHeight)) == NULL) {
+		fl_alert("Can't load bitmap file");
+		return;
+	}
+
+	printf("%d, %d\n", otherWidth, otherHeight);
+	GLubyte otherPixel[3];
+
+	float dissolveAlpha = this->getDissolveAlpha();
+	unsigned char *originPixel = this->m_ucBitmap;
+	unsigned char *viewPixel = this->m_ucPainting;
+	for (int i = 0; i < this->m_nPaintHeight; ++i) {
+		for (int j = 0; j < this->m_nPaintWidth; ++j) {
+			GetPixel(otherBitMap, i, j, otherHeight, otherWidth, otherPixel);
+
+			viewPixel[0] = static_cast<unsigned char>(originPixel[0] * dissolveAlpha + otherPixel[0] * (1 - dissolveAlpha));
+			viewPixel[1] = static_cast<unsigned char>(originPixel[1] * dissolveAlpha + otherPixel[1] * (1 - dissolveAlpha));
+			viewPixel[2] = static_cast<unsigned char>(originPixel[2] * dissolveAlpha + otherPixel[2] * (1 - dissolveAlpha));
+
+			viewPixel += 3;	// Move to next pixel
+			originPixel += 3;
+		}
+	}
+
+	this->m_pUI->m_paintView->redraw();
 }
 
 //---------------------------------------------------------
@@ -337,5 +381,19 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( const Point p )
 	return GetOriginalPixel( p.x, p.y );
 }
 
+void ImpressionistDoc::GetPixel(unsigned char *bitMap,  int h_index, int w_index, int height, int width, GLubyte * result) {
+	
+	if (w_index < 0 || w_index > width || h_index < 0 || h_index > height) {
+		result[0] = 0;
+		result[1] = 0;
+		result[2] = 0;
+		return;
+	}
+
+	GLubyte *color = static_cast<GLubyte *>(bitMap + 3 * (h_index * width + w_index));
+	result[0] = color[0];
+	result[1] = color[1];
+	result[2] = color[2];
+}
 
 

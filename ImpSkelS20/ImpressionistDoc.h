@@ -50,9 +50,14 @@ public:
 	float		getGreenScale() const;
 	float		getBlueScale() const;
 
+	char	   *getDissolveFileName() const;
+	float		getDissolveAlpha() const;
+
+	// Extra functionalities
 	void		swapView();								// called by UI to swap the original and the paint view
 	void		undo();									// called by UI to undo painting
 	void		savePainting() const;					// called by Paint View to save the painted color
+	void		dissolve();								// called by UI to dissolve new image
 	
 
 // Attributes
@@ -110,6 +115,8 @@ public:
 	GLubyte* GetOriginalPixel( int x, int y );   
 	// Get the color of the original picture at the specified point	
 	GLubyte* GetOriginalPixel( const Point p );  
+	// Get the color of the bitmap at the given point
+	void GetPixel(unsigned char *bitMap, int x, int y, int height, int width, GLubyte *result);
 
 
 private:
