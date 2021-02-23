@@ -20,6 +20,7 @@
 #include "ScatteredRingBrush.h"
 #include "GlassMosaicBrush.h"
 #include "BlurBrush.h"
+#include "SharpenBrush.h"
 
 
 
@@ -62,7 +63,9 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[BRUSH_GLASS_MOSAIC]
 		= new GlassMosaicBrush(this, "Glass mosaic");
 	ImpBrush::c_pBrushes[BRUSH_BLUR]
-		= new BlurBrush(this, "Glass mosaic");
+		= new BlurBrush(this, "Blur");
+	ImpBrush::c_pBrushes[BRUSH_SHARPEN]
+		= new SharpenBrush(this, "Sharpen");
 
 
 

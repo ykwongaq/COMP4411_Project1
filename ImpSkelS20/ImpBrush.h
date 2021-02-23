@@ -22,6 +22,7 @@ enum
 	BRUSH_SCATTERED_RING,
 	BRUSH_GLASS_MOSAIC,
 	BRUSH_BLUR,
+	BRUSH_SHARPEN,
 	NUM_BRUSH_TYPE // Make sure this stays at the end!
 };
 
