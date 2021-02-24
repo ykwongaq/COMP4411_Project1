@@ -21,7 +21,14 @@
 #include "TriangleBrush.h"
 #include "ScatteredTriangleBrush.h"
 #include "CircleBrush.h"
+#include "RingBrush.h"
 #include "ScatteredCircleBrush.h"
+#include "ScatteredRingBrush.h"
+#include "GlassMosaicBrush.h"
+#include "BlurBrush.h"
+#include "SharpenBrush.h"
+#include "ScatteredCircleBrush.h"
+
 
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
@@ -65,6 +72,19 @@ ImpressionistDoc::ImpressionistDoc()
 		= new TriangleBrush(this, "Triangle");
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_TRIANGLE]
 		= new ScatteredTriangleBrush(this, "Scattered Triangle");
+		= new ScatteredCircleBrush( this, "Scattered Circles" );
+	ImpBrush::c_pBrushes[BRUSH_RING]
+		= new RingBrush(this, "Rings");
+	ImpBrush::c_pBrushes[BRUSH_SCATTERED_RING]
+		= new ScatteredRingBrush(this, "Scattered Rings");
+	ImpBrush::c_pBrushes[BRUSH_GLASS_MOSAIC]
+		= new GlassMosaicBrush(this, "Glass mosaic");
+	ImpBrush::c_pBrushes[BRUSH_BLUR]
+		= new BlurBrush(this, "Blur");
+	ImpBrush::c_pBrushes[BRUSH_SHARPEN]
+		= new SharpenBrush(this, "Sharpen");
+
+
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];

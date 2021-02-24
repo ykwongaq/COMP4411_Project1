@@ -581,6 +581,11 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Gray Scale",		FL_ALT+'g', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_GRAY_SCALE},
   {"Triangle",			FL_ALT+'t', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_TRIANGLE},
   {"Scattered Triangle",FL_ALT+'w', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_TRIANGLE},
+  {"Rings",				FL_ALT + 'r', (Fl_Callback*)ImpressionistUI::cb_brushChoice, (void*)BRUSH_RING},
+  {"Scattered Rings",	FL_ALT + 's', (Fl_Callback*)ImpressionistUI::cb_brushChoice, (void*)BRUSH_SCATTERED_RING},
+  {"Glass Mosaic",	FL_ALT + 'g', (Fl_Callback*)ImpressionistUI::cb_brushChoice, (void*)BRUSH_GLASS_MOSAIC},
+  {"Basic Blur",	FL_ALT + 'b', (Fl_Callback*)ImpressionistUI::cb_brushChoice, (void*)BRUSH_BLUR},
+  {"Basic Sharpen",	FL_ALT + 'h', (Fl_Callback*)ImpressionistUI::cb_brushChoice, (void*)BRUSH_SHARPEN},
   {0}
 };
 
