@@ -16,6 +16,7 @@ public:
 	ScatteredLineBrush(ImpressionistDoc *pDoc = NULL, char *name = NULL);
 
 	// Functions inherited from LineBrush
+	void BrushBegin(const Point source, const Point target);
 	void BrushMove(const Point source, const Point target);
 };
 #endif
