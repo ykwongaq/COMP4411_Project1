@@ -72,7 +72,6 @@ ImpressionistDoc::ImpressionistDoc()
 		= new TriangleBrush(this, "Triangle");
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_TRIANGLE]
 		= new ScatteredTriangleBrush(this, "Scattered Triangle");
-		= new ScatteredCircleBrush( this, "Scattered Circles" );
 	ImpBrush::c_pBrushes[BRUSH_RING]
 		= new RingBrush(this, "Rings");
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_RING]

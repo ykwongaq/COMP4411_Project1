@@ -144,6 +144,7 @@
     <ClCompile Include="CircleBrush.cpp" />
     <ClCompile Include="DirectionDrawer.cpp" />
     <ClCompile Include="GlassMosaicBrush.cpp" />
+    <ClCompile Include="GrayScaleBrush.cpp" />
     <ClCompile Include="ImpBrush.cpp" />
     <ClCompile Include="Impressionist.cpp" />
     <ClCompile Include="ImpressionistDoc.cpp" />
@@ -156,9 +157,10 @@
     <ClCompile Include="ScatteredLineBrush.cpp" />
     <ClCompile Include="ScatteredPointBrush.cpp" />
     <ClCompile Include="RingBrush.cpp" />
-    <ClCompile Include="ScatteredCircleBrush.cpp" />
     <ClCompile Include="ScatteredRingBrush.cpp" />
+    <ClCompile Include="ScatteredTriangleBrush.cpp" />
     <ClCompile Include="SharpenBrush.cpp" />
+    <ClCompile Include="TriangleBrush.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h" />
@@ -177,7 +179,6 @@
     <ClInclude Include="OriginalView.h" />
     <ClInclude Include="PaintView.h" />
     <ClInclude Include="PointBrush.h" />
-    <ClInclude Include="ScatteredCircleBrush.h" />
     <ClInclude Include="ScatteredLineBrush.h" />
     <ClInclude Include="ScatteredPointBrush.h" />
     <ClInclude Include="SharpenBrush.h" />
