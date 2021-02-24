@@ -14,18 +14,12 @@
 
 // Include individual brush headers here.
 #include "PointBrush.h"
-<<<<<<< HEAD
 #include "LineBrush.h"
 #include "ScatteredLineBrush.h"
 #include "ScatteredPointBrush.h"
-=======
 #include "CircleBrush.h"
-<<<<<<< HEAD
-
->>>>>>> origin/roger
-=======
 #include "ScatteredCircleBrush.h"
->>>>>>> origin/roger
+
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
 
@@ -63,14 +57,11 @@ ImpressionistDoc::ImpressionistDoc()
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
 
-<<<<<<< HEAD
 	this->m_pCurrentDirMethod = STROKE_DIR::STR_SLIDER_OR_MOUSE;
 
 	// Create DirectionDrawer
 	this->m_pDirDrawer = new DirectionDrawer();
 
-=======
->>>>>>> origin/roger
 	// Initialize scattering parameter
 	this->scatRange = 20;
 	this->scatFactor = 4;
