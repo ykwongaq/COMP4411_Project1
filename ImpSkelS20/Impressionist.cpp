@@ -19,6 +19,8 @@
 ImpressionistUI *impUI;
 ImpressionistDoc *impDoc;
 
+GLubyte RGBtoGray(GLubyte, GLubyte, GLubyte);
+
 int main(int	argc, 
 		 char**	argv) 
 {
@@ -63,3 +65,10 @@ float rad2Deg(const float &radian) {
 	return radian * 180 / M_PI;
 }
 
+GLubyte RGBtoGray(GLubyte red, GLubyte green, GLubyte blue) {
+	return static_cast<GLubyte>(0.299 * red + 0.587 * green + 0.114 * blue);
+}
+
+GLubyte RGBtoGray(GLubyte *rgb) {
+	return RGBtoGray(rgb[0], rgb[1], rgb[2]);
+}

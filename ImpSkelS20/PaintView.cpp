@@ -3,6 +3,9 @@
 //
 // The code maintaining the painting view of the input images
 //
+// Coord treat top-left corner to be (0, 0)
+// Source and target treat the bottom-left corner to be (0,0)
+//
 
 #include "impressionist.h"
 #include "impressionistDoc.h"
@@ -90,10 +93,17 @@ void PaintView::draw()
 	m_nStartCol		= scrollpos.x;
 	m_nEndCol		= m_nStartCol + drawWidth;
 
+	bool save = false;	// Whether to save the current painting or not
+
 	if ( m_pDoc->m_ucPainting && !isAnEvent) 
 	{
 		RestoreContent();
 
+	}
+
+	// Check the mouse position is outside the Paint View
+	if (this->isOutside(coord)) {
+		return;
 	}
 
 	if ( m_pDoc->m_ucPainting && isAnEvent) 
@@ -104,11 +114,12 @@ void PaintView::draw()
 
 		Point source( coord.x + m_nStartCol, m_nEndRow - coord.y );
 		Point target( coord.x, m_nWindowHeight - coord.y );
-		
+
 		// This is the event handler
 		switch (eventToDo) 
 		{
 		case LEFT_MOUSE_DOWN:
+			m_pDoc->savePainting();
 			m_pDoc->m_pCurrentBrush->BrushBegin( source, target );
 			break;
 		case LEFT_MOUSE_DRAG:
@@ -180,6 +191,11 @@ int PaintView::handle(int event)
 			eventToDo=LEFT_MOUSE_DRAG;
 		isAnEvent=1;
 		redraw();
+
+		// Draw cursor on Origin View
+		this->m_pDoc->m_pUI->m_origView->setCursor(coord);
+		this->m_pDoc->m_pUI->m_origView->displayCursor();
+
 		break;
 	case FL_RELEASE:
 		coord.x = Fl::event_x();
@@ -194,6 +210,10 @@ int PaintView::handle(int event)
 	case FL_MOVE:
 		coord.x = Fl::event_x();
 		coord.y = Fl::event_y();
+
+		// Draw cursor on Origin View
+		this->m_pDoc->m_pUI->m_origView->setCursor(coord);
+		this->m_pDoc->m_pUI->m_origView->displayCursor();
 		break;
 	default:
 		return 0;
@@ -251,4 +271,9 @@ void PaintView::RestoreContent()
 				  m_pPaintBitstart);
 
 //	glDrawBuffer(GL_FRONT);
+}
+
+bool PaintView::isOutside(const Point &point) {
+	return point.x < 0 || point.x > this->m_nDrawWidth ||
+		   point.y < 0 || point.y > this->m_nDrawHeight;
 }

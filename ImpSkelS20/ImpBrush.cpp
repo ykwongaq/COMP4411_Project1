@@ -53,6 +53,15 @@ void ImpBrush::SetColor (const Point source)
 
 	color[3] = static_cast<GLubyte>(255 * this->m_pDoc->getAlpha());	// Set the alpha value
 
+	// Scaling
+	float redScale		= pDoc->getRedScale();
+	float greenScale	= pDoc->getGreenScale();
+	float blueScale		= pDoc->getBlueScale();
+
+	color[0] = static_cast<int>(color[0] * redScale		> ImpressionistDoc::MAX_COLOR_INDEX ? ImpressionistDoc::MAX_COLOR_INDEX : color[0] * redScale);
+	color[1] = static_cast<int>(color[1] * greenScale	> ImpressionistDoc::MAX_COLOR_INDEX ? ImpressionistDoc::MAX_COLOR_INDEX : color[1] * greenScale);
+	color[2] = static_cast<int>(color[2] * blueScale	> ImpressionistDoc::MAX_COLOR_INDEX ? ImpressionistDoc::MAX_COLOR_INDEX : color[2] * blueScale);
+
 	glColor4ubv( color );
 }
 

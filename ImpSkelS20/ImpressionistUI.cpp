@@ -220,6 +220,19 @@ void ImpressionistUI::cb_clear_canvas(Fl_Menu_* o, void* v)
 	pDoc->clearCanvas();
 }
 
+//-------------------------------------------------------------
+// Brings up the color dialog
+// This is called by the UI when the color menu item
+// is chosen
+//-------------------------------------------------------------
+void ImpressionistUI::cb_color(Fl_Menu_ *o, void *v) {
+	whoami(o)->m_ColorDialog->show();
+}
+
+void ImpressionistUI::cb_undo(Fl_Menu_ *o, void *v) {
+	ImpressionistUI::whoami(o)->getDocument()->undo();
+}
+
 //------------------------------------------------------------
 // Causes the Impressionist program to exit
 // Called by the UI when the quit menu item is chosen
@@ -229,6 +242,10 @@ void ImpressionistUI::cb_exit(Fl_Menu_* o, void* v)
 	whoami(o)->m_mainWindow->hide();
 	whoami(o)->m_brushDialog->hide();
 
+}
+
+void ImpressionistUI::cb_dissolveDialog(Fl_Menu_ *o, void *v) {
+	ImpressionistUI::whoami(o)->m_DissolveDialog->show();
 }
 
 
@@ -331,6 +348,53 @@ void ImpressionistUI::cb_rotationAngle(Fl_Widget *o, void *v) {
 //-----------------------------------------------------------
 void ImpressionistUI::cb_alpha(Fl_Widget *o, void *v) {
 	( (ImpressionistUI *) ( o->user_data() ) )->m_nAlpha = float(( (Fl_Slider *) o )->value());
+}
+
+//-----------------------------------------------------------
+// Update the red color index
+//-----------------------------------------------------------
+void ImpressionistUI::cb_red(Fl_Widget *o, void *v) {
+	((ImpressionistUI *) (o->user_data()))->m_nRedScale = float(((Fl_Slider *) o)->value());
+}
+
+//-----------------------------------------------------------
+// Update the green color index
+//-----------------------------------------------------------
+void ImpressionistUI::cb_green(Fl_Widget *o, void *v) {
+	((ImpressionistUI *) (o->user_data()))->m_nGreenScale = float(((Fl_Slider *) o)->value());
+}
+
+//-----------------------------------------------------------
+// Update the blue color index
+//-----------------------------------------------------------
+void ImpressionistUI::cb_blue(Fl_Widget *o, void *v) {
+	((ImpressionistUI *) (o->user_data()))->m_nBlueScale = float(((Fl_Slider *) o)->value());
+}
+
+void ImpressionistUI::cb_choseDissolveFile(Fl_Widget *o, void *v) {
+	ImpressionistUI *pUI = (ImpressionistUI *) (o->user_data());
+
+	char *newfile = fl_file_chooser("Open File?", "*.bmp", pUI->getDocument()->getImageName());
+	if (newfile != NULL) {
+		pUI->m_nDissolveFileName = newfile;
+	}
+}
+
+void ImpressionistUI::cb_dissolveAlpha(Fl_Widget *o, void *v) {
+	((ImpressionistUI *) (o->user_data()))->m_nDissolveAlpha = float(((Fl_Slider *) o)->value());
+}
+
+void ImpressionistUI::cb_dissolve(Fl_Widget *o, void *v) {
+	ImpressionistDoc *pDoc = ((ImpressionistUI *) (o->user_data()))->getDocument();
+	pDoc->dissolve();
+}
+
+//------------------------------------------------
+// Swap the original view and the paint view
+//------------------------------------------------
+void ImpressionistUI::cb_swabView(Fl_Menu_ *o, void *v) {
+	ImpressionistDoc *pDoc = ImpressionistUI::whoami(o)->getDocument();
+	pDoc->swapView();
 }
 
 //---------------------------------- per instance functions --------------------------------------
@@ -461,6 +525,26 @@ void ImpressionistUI::setAlpha(const float &alpha) {
 	}
 }
 
+float ImpressionistUI::getRedScale() const {
+	return this->m_nRedScale;
+}
+
+float ImpressionistUI::getGreenScale() const {
+	return this->m_nGreenScale;
+}
+
+float ImpressionistUI::getBlueScale() const {
+	return this->m_nBlueScale;
+}
+
+char *ImpressionistUI::getDissolveFileName() const {
+	return this->m_nDissolveFileName;
+}
+
+float ImpressionistUI::getDissolveAlpha() const {
+	return this->m_nDissolveAlpha;
+}
+
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
@@ -470,6 +554,13 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Clear Canvas", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 		
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
+		{ 0 },
+
+	{"&Bonus",		0, 0, 0, FL_SUBMENU},
+		{"&Swap Image",		FL_ALT+'s', (Fl_Callback*) ImpressionistUI::cb_swabView},
+		{"&Color",			FL_ALT+'c', (Fl_Callback*) ImpressionistUI::cb_color},
+		{"&Undo",			FL_ALT+'z', (Fl_Callback*) ImpressionistUI::cb_undo},
+		{"&Dissolve",		FL_ALT+'d', (Fl_Callback*) ImpressionistUI::cb_dissolveDialog},
 		{ 0 },
 
 	{ "&Help",		0, 0, 0, FL_SUBMENU },
@@ -487,6 +578,9 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Scattered Points",	FL_ALT+'q', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_POINTS},
   {"Scattered Lines",	FL_ALT+'m', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_LINES},
   {"Scattered Circles",	FL_ALT+'d', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_CIRCLES},
+  {"Gray Scale",		FL_ALT+'g', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_GRAY_SCALE},
+  {"Triangle",			FL_ALT+'t', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_TRIANGLE},
+  {"Scattered Triangle",FL_ALT+'w', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_TRIANGLE},
   {0}
 };
 
@@ -527,14 +621,22 @@ ImpressionistUI::ImpressionistUI() {
 	Fl_Group::current()->resizable(group);
     m_mainWindow->end();
 
-	// init values
-
+	// ----------------------------------------------------
+	// Attributes initialization
+	// ----------------------------------------------------
 	this->m_nSize = 10;
 	this->m_nBrushWidth = 1;
 	this->m_nRotationAngle = 0;
 	this->m_nAlpha = 1.0;
+	this->m_nRedScale = 1.0;
+	this->m_nGreenScale = 1.0;
+	this->m_nBlueScale = 1.0;
+	this->m_nDissolveFileName = NULL;
+	this->m_nDissolveAlpha = 0.5;
 
+	// ----------------------------------------------------
 	// brush dialog definition
+	// ----------------------------------------------------
 	m_brushDialog = new Fl_Window(400, 325, "Brush Dialog");
 
 	// Add a brush type choice to the dialog
@@ -608,6 +710,86 @@ ImpressionistUI::ImpressionistUI() {
 	m_AlphaSlider->align(FL_ALIGN_RIGHT);
 	m_AlphaSlider->callback(cb_alpha);
 
-    m_brushDialog->end();	
+    m_brushDialog->end();
 
+	// ----------------------------------------------------
+	// Color dialog definition
+	// ----------------------------------------------------
+	m_ColorDialog = new Fl_Window(400, 325, "Color Dialog");
+
+	// Add red color index slider to the dialog
+	m_RedSilder = new Fl_Value_Slider(10, 40, 300, 20, "&Red");
+	m_RedSilder->user_data((void *) (this));	// record self to be used by static callback functions
+	m_RedSilder->type(FL_HOR_NICE_SLIDER);
+	m_RedSilder->labelfont(FL_COURIER);
+	m_RedSilder->labelsize(12);
+	m_RedSilder->minimum(ImpressionistDoc::MIN_COLOR_SCALE);
+	m_RedSilder->maximum(ImpressionistDoc::MAX_COLOR_SCALE);
+	m_RedSilder->step(0.01);
+	m_RedSilder->value(this->m_nRedScale);
+	m_RedSilder->align(FL_ALIGN_RIGHT);
+	m_RedSilder->callback(cb_red);
+
+	// Add green color index slider to the dialog
+	m_GreenSilder = new Fl_Value_Slider(10, 65, 300, 20, "&Green");
+	m_GreenSilder->user_data((void *) (this));	// record self to be used by static callback functions
+	m_GreenSilder->type(FL_HOR_NICE_SLIDER);
+	m_GreenSilder->labelfont(FL_COURIER);
+	m_GreenSilder->labelsize(12);
+	m_GreenSilder->minimum(ImpressionistDoc::MIN_COLOR_SCALE);
+	m_GreenSilder->maximum(ImpressionistDoc::MAX_COLOR_SCALE);
+	m_GreenSilder->step(0.01);
+	m_GreenSilder->value(this->m_nGreenScale);
+	m_GreenSilder->align(FL_ALIGN_RIGHT);
+	m_GreenSilder->callback(cb_green);
+
+	// Add blue color index slider to the dialog
+	m_BlueSilder = new Fl_Value_Slider(10, 90, 300, 20, "&Blue");
+	m_BlueSilder->user_data((void *) (this));	// record self to be used by static callback functions
+	m_BlueSilder->type(FL_HOR_NICE_SLIDER);
+	m_BlueSilder->labelfont(FL_COURIER);
+	m_BlueSilder->labelsize(12);
+	m_BlueSilder->minimum(ImpressionistDoc::MIN_COLOR_SCALE);
+	m_BlueSilder->maximum(ImpressionistDoc::MAX_COLOR_SCALE);
+	m_BlueSilder->step(0.01);
+	m_BlueSilder->value(this->m_nBlueScale);
+	m_BlueSilder->align(FL_ALIGN_RIGHT);
+	m_BlueSilder->callback(cb_blue);
+
+	m_ColorDialog->end();
+
+	// ----------------------------------------------------
+	// Dissolve dialog definition
+	// ----------------------------------------------------
+	m_DissolveDialog = new Fl_Window(400, 325, "Color Dialog");
+
+	// Add choose file button into dialog
+	m_FileChoseButton = new Fl_Button(10, 10, 150, 25, "&Choose FIle");
+	m_FileChoseButton->user_data((void *) (this));
+	m_FileChoseButton->callback(cb_choseDissolveFile);
+
+	// Add dissolve alpha slider into dialog
+	m_DissolveAlphaSilder = new Fl_Value_Slider(10, 45, 300, 20, "&Alpha");
+	m_DissolveAlphaSilder->user_data((void *) (this));	// record self to be used by static callback functions
+	m_DissolveAlphaSilder->type(FL_HOR_NICE_SLIDER);
+	m_DissolveAlphaSilder->labelfont(FL_COURIER);
+	m_DissolveAlphaSilder->labelsize(12);
+	m_DissolveAlphaSilder->minimum(ImpressionistDoc::MIN_ALPHA);
+	m_DissolveAlphaSilder->maximum(ImpressionistDoc::MAX_ALPHA);
+	m_DissolveAlphaSilder->step(0.01);
+	m_DissolveAlphaSilder->value(this->m_nDissolveAlpha);
+	m_DissolveAlphaSilder->align(FL_ALIGN_RIGHT);
+	m_DissolveAlphaSilder->callback(cb_dissolveAlpha);
+	
+	// Add dissolve button into dialog
+	m_DissolveButton = new Fl_Button(10, 100, 150, 25, "&Dissolve");
+	m_DissolveButton->user_data((void *) (this));
+	m_DissolveButton->callback(cb_dissolve);
+
+	//m_buff = new Fl_Text_Buffer();
+	//m_disp = new Fl_Text_Display(10, 70, 300, 25);
+	//m_disp->buffer(m_buff);
+	//m_disp->resizable();
+
+	m_DissolveDialog->end();
 }

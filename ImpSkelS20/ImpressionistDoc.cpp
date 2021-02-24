@@ -17,6 +17,9 @@
 #include "LineBrush.h"
 #include "ScatteredLineBrush.h"
 #include "ScatteredPointBrush.h"
+#include "GrayScaleBrush.h"
+#include "TriangleBrush.h"
+#include "ScatteredTriangleBrush.h"
 #include "CircleBrush.h"
 #include "ScatteredCircleBrush.h"
 
@@ -25,15 +28,18 @@
 
 const float ImpressionistDoc::MIN_ALPHA = 0.0;
 const float ImpressionistDoc::MAX_ALPHA = 1.0;
+const float ImpressionistDoc::MIN_COLOR_SCALE = 0.0;
+const float ImpressionistDoc::MAX_COLOR_SCALE = 1.0;
 
 ImpressionistDoc::ImpressionistDoc() 
 {
 	// Set NULL image name as init. 
 	m_imageName[0]	='\0';	
 
-	m_nWidth		= -1;
-	m_ucBitmap		= NULL;
-	m_ucPainting	= NULL;
+	m_nWidth			= -1;
+	m_ucBitmap			= NULL;
+	m_ucPainting		= NULL;
+	m_ucPrevPainting	= NULL;
 
 
 	// create one instance of each brush
@@ -53,6 +59,13 @@ ImpressionistDoc::ImpressionistDoc()
 		= new ScatteredLineBrush( this, "Scattered Lines" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_CIRCLES]	
 		= new ScatteredCircleBrush( this, "Scattered Circles" );
+		= new PointBrush( this, "Scattered Circles" );
+	ImpBrush::c_pBrushes[BRUSH_GRAY_SCALE]
+		= new GrayScaleBrush(this, "Gray Scale");
+	ImpBrush::c_pBrushes[BRUSH_TRIANGLE]
+		= new TriangleBrush(this, "Triangle");
+	ImpBrush::c_pBrushes[BRUSH_SCATTERED_TRIANGLE]
+		= new ScatteredTriangleBrush(this, "Scattered Triangle");
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
@@ -98,6 +111,84 @@ int ImpressionistDoc::getScatFactor() const {
 
 void ImpressionistDoc::setScatFactor(const int &scatFactor) {
 	this->scatFactor = scatFactor;
+}
+
+float ImpressionistDoc::getRedScale() const {
+	return this->m_pUI->getRedScale();
+}
+
+float ImpressionistDoc::getGreenScale() const {
+	return this->m_pUI->getGreenScale();
+}
+
+float ImpressionistDoc::getBlueScale() const {
+	return this->m_pUI->getBlueScale();
+}
+
+char *ImpressionistDoc::getDissolveFileName() const {
+	return this->m_pUI->getDissolveFileName();
+}
+
+float ImpressionistDoc::getDissolveAlpha() const {
+	return this->m_pUI->getDissolveAlpha();
+}
+
+//---------------------------------------------------------
+// Called by the UI to swap the original view and the
+// paint view
+//---------------------------------------------------------
+void ImpressionistDoc::swapView() {
+	unsigned char *temp = this->m_ucBitmap;
+	this->m_ucBitmap = this->m_ucPainting;
+	this->m_ucPainting = temp;
+
+	this->m_pUI->m_paintView->refresh();
+	this->m_pUI->m_origView->refresh();
+}
+
+void ImpressionistDoc::undo() {
+	memcpy(this->m_ucPainting, this->m_ucPrevPainting, this->m_nPaintWidth * this->m_nPaintHeight * 3 * sizeof(unsigned char));
+	this->m_pUI->m_paintView->refresh();
+}
+
+void ImpressionistDoc::savePainting() const {
+	memcpy(this->m_ucPrevPainting, this->m_ucPainting, this->m_nPaintWidth * this->m_nPaintHeight * 3 * sizeof(unsigned char));
+}
+
+void ImpressionistDoc::dissolve() {
+	
+	printf("dissolving");
+
+	if (this->m_ucPainting == NULL) return;
+	
+	unsigned char *otherBitMap;
+	int	otherWidth = 0, otherHeight = 0;
+
+	if ((otherBitMap = readBMP(this->getDissolveFileName(), otherWidth, otherHeight)) == NULL) {
+		fl_alert("Can't load bitmap file");
+		return;
+	}
+
+	printf("%d, %d\n", otherWidth, otherHeight);
+	GLubyte otherPixel[3];
+
+	float dissolveAlpha = this->getDissolveAlpha();
+	unsigned char *originPixel = this->m_ucBitmap;
+	unsigned char *viewPixel = this->m_ucPainting;
+	for (int i = 0; i < this->m_nPaintHeight; ++i) {
+		for (int j = 0; j < this->m_nPaintWidth; ++j) {
+			GetPixel(otherBitMap, i, j, otherHeight, otherWidth, otherPixel);
+
+			viewPixel[0] = static_cast<unsigned char>(originPixel[0] * dissolveAlpha + otherPixel[0] * (1 - dissolveAlpha));
+			viewPixel[1] = static_cast<unsigned char>(originPixel[1] * dissolveAlpha + otherPixel[1] * (1 - dissolveAlpha));
+			viewPixel[2] = static_cast<unsigned char>(originPixel[2] * dissolveAlpha + otherPixel[2] * (1 - dissolveAlpha));
+
+			viewPixel += 3;	// Move to next pixel
+			originPixel += 3;
+		}
+	}
+
+	this->m_pUI->m_paintView->redraw();
 }
 
 //---------------------------------------------------------
@@ -204,6 +295,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	// release old storage
 	if ( m_ucBitmap ) delete [] m_ucBitmap;
 	if ( m_ucPainting ) delete [] m_ucPainting;
+	if (m_ucPrevPainting) delete [] m_ucPrevPainting;
 
 	m_ucBitmap		= data;
 
@@ -215,6 +307,8 @@ int ImpressionistDoc::loadImage(char *iname)
 								m_pUI->m_mainWindow->y(), 
 								width*2, 
 								height+25);
+
+	this->m_ucPrevPainting = new unsigned char[width * height * 3];
 
 	// display it on origView
 	m_pUI->m_origView->resizeWindow(width, height);	
@@ -291,5 +385,19 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( const Point p )
 	return GetOriginalPixel( p.x, p.y );
 }
 
+void ImpressionistDoc::GetPixel(unsigned char *bitMap,  int h_index, int w_index, int height, int width, GLubyte * result) {
+	
+	if (w_index < 0 || w_index > width || h_index < 0 || h_index > height) {
+		result[0] = 0;
+		result[1] = 0;
+		result[2] = 0;
+		return;
+	}
+
+	GLubyte *color = static_cast<GLubyte *>(bitMap + 3 * (h_index * width + w_index));
+	result[0] = color[0];
+	result[1] = color[1];
+	result[2] = color[2];
+}
 
 

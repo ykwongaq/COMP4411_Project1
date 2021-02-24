@@ -29,12 +29,22 @@ public:
 	void refresh();
 
 	void resizeWindow(int width, int height);
-
+	void setCursor(const Point &cursor);
+	void displayCursor();
+	
+	bool isOutside(const Point &point);
+	
 	ImpressionistDoc*	m_pDoc;
 
 private:
 	int	m_nWindowWidth, 
 		m_nWindowHeight;
+
+	// Cursor parameter
+	Point	cursor;				// Cursor location
+	int		cursorSize;			// Cursor size
+	GLubyte cursorColor[3];		// Cursor color
+	
 
 };
 
