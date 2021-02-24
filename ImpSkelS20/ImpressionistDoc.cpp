@@ -59,7 +59,6 @@ ImpressionistDoc::ImpressionistDoc()
 		= new ScatteredLineBrush( this, "Scattered Lines" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_CIRCLES]	
 		= new ScatteredCircleBrush( this, "Scattered Circles" );
-		= new PointBrush( this, "Scattered Circles" );
 	ImpBrush::c_pBrushes[BRUSH_GRAY_SCALE]
 		= new GrayScaleBrush(this, "Gray Scale");
 	ImpBrush::c_pBrushes[BRUSH_TRIANGLE]
